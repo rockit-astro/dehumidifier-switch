@@ -19,6 +19,5 @@ If the RESET EN trace has been cut on the Arduino then you will need to press an
 
 ### Hardware Setup
 
-The solid state relay should be connected between digital pin 2 and ground.
-The status LED should be connected between digital pin 3 and ground (via a current limiting resistor).
-The button should be connected between digital pin 4 and ground.
+The solid state relay should be connected between digital pin 4 and ground.
+The button should be connected between digital pin 2 and ground.

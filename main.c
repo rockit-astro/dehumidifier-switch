@@ -21,11 +21,8 @@
 #define SWITCH_DD DDD2
 #define RELAY_PIN PD4
 #define RELAY_DD DDD4
-#define LIGHT_STATUS_PIN PD3
-#define LIGHT_STATUS_DD DDD3
 
 volatile bool relay_enabled;
-volatile bool status_light_enabled;
 volatile bool toggle_lights;
 
 void tick()
@@ -45,25 +42,13 @@ void tick()
             IO_PORT &= ~_BV(RELAY_PIN);
             relay_enabled = false;
         }
-
-        // Second to last bit sets the light status
-        if (value & 0x02)
-        {
-            IO_PORT |= _BV(LIGHT_STATUS_PIN);
-            status_light_enabled = true;
-        }
-        else
-        {
-            IO_PORT &= ~_BV(LIGHT_STATUS_PIN);
-            status_light_enabled = false;
-        }
     }
 }
 
 int main()
 {
-    // Set Relay and Light status as output
-    IO_DDR = _BV(RELAY_DD) | _BV(LIGHT_STATUS_DD);
+    // Set Relay as output
+    IO_DDR = _BV(RELAY_DD);
 
     // Enable pullup on switch input
     IO_PORT = _BV(SWITCH_PIN);
@@ -107,7 +92,7 @@ ISR(TIMER0_COMPA_vect)
 // Status update interrupt
 ISR(TIMER1_COMPA_vect)
 {
-    uint8_t status = (toggle_lights ? 0x04 : 0x0) | (status_light_enabled ? 0x02 : 0x00) | (relay_enabled ? 0x01 : 0x00);
+    uint8_t status = (toggle_lights ? 0x02 : 0x0) | (relay_enabled ? 0x01 : 0x00);
     toggle_lights = false;
     usb_write(status);
 }
