@@ -58,9 +58,9 @@ int main()
     TCCR1B = _BV(CS12) | _BV(CS10) | _BV(WGM12);
     TIMSK1 |= _BV(OCIE1A);
 
-    // Configure timer0 to interrupt after 1.024ms for debouncing the light switch
+    // Configure timer0 to interrupt after 100ms for debouncing the light switch
     TCCR0A = _BV(WGM01);
-    OCR0A = 16;    
+    OCR0A = 98;
     TIMSK0 |= _BV(OCIE0A);
 
     // Enable rising edge trigger for switch pin
@@ -78,7 +78,7 @@ int main()
 ISR(INT0_vect)
 {
     // Start button debounce timer
-    TCCR0B = _BV(CS02) | _BV(CS00);
+    TCCR0B = _BV(CS01) | _BV(CS00);
 }
 
 // Button press debounce timer elapsed
