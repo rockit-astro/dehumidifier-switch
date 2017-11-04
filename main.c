@@ -92,7 +92,9 @@ ISR(TIMER0_COMPA_vect)
 // Status update interrupt
 ISR(TIMER1_COMPA_vect)
 {
-    uint8_t status = (toggle_lights ? 0x02 : 0x0) | (relay_enabled ? 0x01 : 0x00);
+    // TODO: Reenable the light toggle once the hardware supports it
+    // uint8_t status = (toggle_lights ? 0x02 : 0x0) | (relay_enabled ? 0x01 : 0x00);
+    uint8_t status = (relay_enabled ? 0x01 : 0x00);
     toggle_lights = false;
     usb_write(status);
 }
